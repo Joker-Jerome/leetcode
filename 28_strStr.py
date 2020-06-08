@@ -44,3 +44,4 @@ def makeNext(self, needle):
         if needle[i] != needle[j]:
             j = next[j]
     return next
+

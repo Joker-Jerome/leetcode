@@ -19,8 +19,6 @@ class Solution:
         
         # length check
         lsh, lsn = len(haystack), len(needle)
-        if lsh == 0:
-            return -1
         if lsn == 0:
             return 0
         
