@@ -7,6 +7,7 @@ class Solution:
         return(res)
         
     def get_permute(self, res, nums, curr_set):
+        # when the nums is null 
         if not nums:
             res.append(curr_set)
         for i in range(len(nums)):
