@@ -1,0 +1,153 @@
+task going on: 
+66356516_[0-9807]  bigmem,day, utmost_training_1  zy92   PD       0:00    2:00:00     1     1        32G (None)
+66356517_[0-7864]  bigmem,day, utmost_training_2  zy92   PD       0:00    2:00:00     1     1        32G (None)
+66356519_[0-8201]  bigmem,day, utmost_training_3  zy92   PD       0:00    2:00:00     1     1        32G (None)
+
+dsqa -j 66356516 -f training_task_test_1.txt > re-run_jobs_66356516.txt 2> report_66356516.txt
+dsqa -j 66356517 -f training_task_test_1.txt > re-run_jobs_66356517.txt 2> report_66356517.txt
+dsqa -j 66356519 -f training_task_test_1.txt > re-run_jobs_66356519.txt 2> report_66356519.txt
+
+dSQ --jobfile re-run_jobs_66356516.txt -J task_16 --mem-per-cpu=96G -t 12:00:00 -p bigmem,day --batch-file re-run_jobs_66356516.txt_run.sh
+dSQ --jobfile re-run_jobs_66356517.txt -J task_17 --mem-per-cpu=96G -t 12:00:00 -p bigmem,day --batch-file re-run_jobs_66356517.txt_run.sh
+dSQ --jobfile re-run_jobs_66356519.txt -J task_19 --mem-per-cpu=96G -t 12:00:00 -p bigmem,day --batch-file re-run_jobs_66356519.txt_run.sh
+
+# verification run 
+66580168_[0-9807]  bigmem,day, utmost_training_1  zy92   PD       0:00    2:00:00     1     1        32G (None)
+66580169_[0-7864]  bigmem,day, utmost_training_2  zy92   PD       0:00    2:00:00     1     1        32G (None)
+66580170_[0-8201]  bigmem,day, utmost_training_3  zy92   PD       0:00    2:00:00     1     1        32G (None)
+
+# 
+66740222_[0-9807]  bigmem,day, utmost_training_1  zy92   PD       0:00    2:00:00     1     1        32G (None)
+66740225_[0-7864]  bigmem,day, utmost_training_2  zy92   PD       0:00    2:00:00     1     1        32G (None)
+66740228_[0-8201]  bigmem,day, utmost_training_3  zy92   PD       0:00    2:00:00     1     1        32G (None)
+
+#
+66917212_[5-9807]  bigmem,day, utmost_training_1  zy92   PD       0:00    2:00:00     1     1        32G (Resources)
+66917332_[0-7864]  bigmem,day, utmost_training_2  zy92   PD       0:00    2:00:00     1     1        32G (None)
+66917333_[0-8201]  bigmem,day, utmost_training_3  zy92   PD       0:00    2:00:00     1     1        32G (None)
+
+# 
+training 3 67005025
+training 2 67039939
+
+training 2 9707
+training 1 29062
+
+# create tables
+71059_[0-21]       bigmem,day  create_table       zy92   PD       0:00 1-00:00:00     1     1        64G (Resources)
+
+
+# extracting and filtering the non-coding RNA 
+# identify the empty folders
+find . -type d -empty -print
+# delete those folders 
+find . -type d -empty -delete
+
+# transfering the weightdb data
+1458753_[0-21]     bigmem,day  format_weight      zy92   PD       0:00 1-00:00:00     1     1        32G (None)
+
+1587727_[0-21]     bigmem,day  format_weight      zy92   PD       0:00 1-00:00:00     1     1        32G (None)
+
+# when building the database table, chromosome 1 - 3, 5 took a long time to run due to the large numbers of genes
+
+estimated time: chr1 1hr50min
+# weight files
+/gpfs/scratch60/zhao/zy92/GTEX/weight_ENET
+/gpfs/scratch60/zhao/zy92/GTEX/weight_BVLS_ENET
+
+# database building 
+ut/code/R/build_weight_database.sh
+30839884_[0-13]    bigmem,gene database           zy92   PD       0:00   12:00:00     1     1        16G (None)
+
+# extract and transform the non-coding 
+
+# previous version of utmost might have coordinate error (double-check that) based on rsid (it might be OK based on rsid)
+
+# single tissue test brain ENET/BVLS_ENET
+30842212_[0-13]    bigmem,gene single_AD_Nerve_Ti zy92   PD       0:00   10:00:00     1     1        64G (Priority)
+30842213_[0-13]    bigmem,gene single_AD_Nerve_Ti zy92   PD       0:00   10:00:00     1     1        64G (None)
+
+# single tissue variance calculation based on new database
+
+# BVLS 
+
+# create table
+ENET
+BVLS_ENET
+
+# still face the problem 
+
+# path is wrong 
+
+# update the weight files 
+reformat ENET BVLS
+chr1 takes so long 2h 30m
+
+# ENET create table
+chr 1 1hr 30m
+
+# BVLS_ENET create table
+# database buidling 
+
+# single tissue covariance and joint covariance 
+BVLS_ENET single tissue covariance 
+
+# single tissue test 
+BVLS_ENET: 2942162
+ENET: 2942163
+
+# joint covariance ENET
+31766530_0         bigmem      joint_covariance   zy92    R       0:08 2-00:00:00     1     1       512G bigmem02
+
+# retraining the BVLS ENET models on all brain tissues
+Submitted batch job 3256044
+Submitted batch job 3256045
+Submitted batch job 3256046
+Submitted batch job 3256047
+Submitted batch job 3256048
+Submitted batch job 3256049
+Submitted batch job 3256050
+Submitted batch job 3256051
+Submitted batch job 3256052
+Submitted batch job 3256053
+Submitted batch job 3256053
+Submitted batch job 3256054
+Submitted batch job 3256055
+Submitted batch job 3256056
+Submitted batch job 3256057
+Submitted batch job 3256058
+Submitted batch job 3256059
+Submitted batch job 3256060
+Submitted batch job 3256061
+Submitted batch job 3256062
+Submitted batch job 3256063
+Submitted batch job 3256064
+Submitted batch job 3256090
+
+### ENET
+Submitted batch job 33052110
+Submitted batch job 33052111
+Submitted batch job 33052112
+Submitted batch job 33052113
+Submitted batch job 33052114
+Submitted batch job 33052115
+Submitted batch job 33052124
+Submitted batch job 33052125
+Submitted batch job 33052126
+Submitted batch job 33052127
+Submitted batch job 33052128
+Submitted batch job 33052129
+Submitted batch job 33052130
+Submitted batch job 33052131
+Submitted batch job 33052132
+Submitted batch job 33052133
+Submitted batch job 33052134
+Submitted batch job 33052135
+Submitted batch job 33052136
+Submitted batch job 33052137
+Submitted batch job 33052138
+Submitted batch job 33052139
+
+
+
+
