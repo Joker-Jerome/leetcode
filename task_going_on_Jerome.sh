@@ -515,10 +515,11 @@ dSQ --jobfile create_table_task_ridge_brain.txt  -J create_table_ridge_brain --m
 
 #### database building ridge
 cd /gpfs/loomis/project/zhao/zy92/twas_bvls/code	
+# bvls ridge
 bash build_weight_database_master.sh /gpfs/loomis/project/zhao/zy92/GTEX/results_ridge/tables/all_tissues_pruned/BVLS_RIDGE/
 bash build_weight_database_master.sh /gpfs/loomis/project/zhao/zy92/GTEX/results_ridge/tables/brain_pruned/BVLS_RIDGE/
 
-
+# ridge
 bash build_weight_database_master.sh /gpfs/loomis/project/zhao/zy92/GTEX/results_ridge/tables/all_tissues_pruned/RIDGE/
 bash build_weight_database_master.sh /gpfs/loomis/project/zhao/zy92/GTEX/results_ridge/tables/brain_pruned/RIDGE/
 
@@ -537,6 +538,17 @@ dSQ --jobfile single_tissue_nc_bvls_task.txt -J bvls_single_cov --mem-per-cpu=32
 dSQ --jobfile single_tissue_nc_enet_task.txt -J enet_single_cov --mem-per-cpu=32G -t 24:00:00 -p bigmem,day --batch-file single_tissue_nc_enet_task_run.sh
 
 
+# new real data bvls 
+cd /gpfs/loomis/project/zhao/zy92/twas_bvls/code/submit
+for i in {1..22}
+do
+dSQ --jobfile bvls_enet_real_others_task_${i}.txt  -J enet_${i} --mem-per-cpu=8G -t 1:00:00 -p bigmem,general,scavenge --batch-file bvls_enet_real_others_task_${i}_run.sh
+done
+
+for i in {1..22}
+do
+sbatch bvls_enet_real_others_task_${i}_run.sh
+done
 
 # single tissue test
 
