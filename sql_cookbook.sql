@@ -499,4 +499,213 @@ from information_schema.tables;
 ## Use the SHOW INDEX command:
 show index from emp;
 
--- 6.
+-- 6. Working with string 
+
+create table t10
+as 
+select row_number() over () as id
+from sql_cookbook.EMP
+limit 10;
+
+# we chose 10 becuase the definition of this column varchar(10)
+select substr(e.ename,iter.pos,1) as C
+from (select ename from sql_cookbook.emp where ename = 'KING') e,
+       (select id as pos from t10) iter
+where iter.pos <= length(e.ename);
+
+## Counting the Occurrences of a Character in a String
+create table t1
+as 
+select row_number() over () as id
+from sql_cookbook.EMP
+limit 1;
+
+select (length('10,CLARK,MANAGER')- length(replace('10,CLARK,MANAGER',',','')))/length(',')
+as cnt 
+from t1;
+
+## regular expression
+where data regexp '[^0-9a-zA-Z]' = 0
+
+-- 7. Working with Numbers
+## Generating a Running Total
+select ename, sal,
+     sum(sal) over (order by sal,empno) as running_total
+from sql_cookbook.emp
+order by 2;
+
+## Generating a Running Product
+select e.empno,e.ename,e.sal,
+(select exp(sum(ln(d.sal)))
+   from sql_cookbook.emp d
+where d.empno <= e.empno
+  and e.deptno=d.deptno) as running_prod
+from sql_cookbook.emp e
+where e.deptno=10;
+
+## Finding the mode
+select sal
+from sql_cookbook.EMP
+where DEPTNO = 20
+group by SAL
+having count(*) >= all(select count(*) as count 
+						from sql_cookbook.EMP
+						where DEPTNO = 20
+						group by SAL
+						);
+
+select deptno, sal, count(sal) as sal_count 
+from sql_cookbook.EMP
+group by DEPTNO, sal
+order by DEPTNO;
+
+# Finding mode for each group
+with sal_count(deptno, sal, sal_count) as (
+	select deptno, sal, count(sal) as sal_count 
+	from sql_cookbook.EMP
+	group by DEPTNO, sal
+), count_summary(deptno, max_count) as (
+	select deptno, max(SAL_COUNT) as max_count
+	from sal_count
+	group by DEPTNO
+)
+select c.deptno, s.sal 
+from count_summary c left join sal_count s
+on c.deptno = s.deptno and c.max_count = s.sal_count;
+
+# second
+with sal_count as (
+	select deptno, sal, count(sal) as sal_count 
+	from sql_cookbook.EMP
+	group by DEPTNO, sal
+), count_summary as (
+	select deptno, max(SAL_COUNT) as max_count
+	from sal_count
+	group by DEPTNO
+)
+select c.deptno, s.sal 
+from count_summary c left join sal_count s
+on c.deptno = s.deptno and c.max_count = s.sal_count;
+
+# median 
+with sal_row as (
+	select deptno, 
+		sal, 
+		row_number() over (PARTITION by deptno order by sal) as rn,
+		count(*) over (PARTITION by deptno) as rc
+	from sql_cookbook.EMP
+)
+select deptno, AVG(sal) as median #  sal, mid_row, mid_row_extra
+from (
+	select deptno, sal, rn, rc, 
+		case when odd_even = 1 then (rc + 1)/2
+			 when odd_even = 0 then rc/2
+			 end as mid_row,
+		case when odd_even = 1 then (rc + 1)/2
+			 when odd_even = 0 then rc/2 + 1
+			 end as mid_row_extra
+	from (
+		select deptno, sal, rn, rc,  
+			MOD(rc, 2) as odd_even
+		from sal_row
+		) b 
+	) a 
+where rn = mid_row or rn = mid_row_extra
+group by deptno;
+
+select deptno, 
+	sal, 
+	row_number() over (PARTITION by deptno order by sal) as rn,
+	count(*) over (PARTITION by deptno) as rc 
+from sql_cookbook.EMP;
+
+## Determining the Percentage of a Total
+with dept_sum as (
+	select deptno, sum(sal) as sum_sal
+	from sql_cookbook.EMP
+	group by DEPTNO
+
+)
+select deptno, sum_sal, sum_sal/(select sum(sum_sal) from dept_sum) * 100 as pct
+from dept_sum
+order by deptno;
+
+# sum(sal)over() total
+
+## Aggregating Nullable Columns
+select deptno, avg(coalesce(comm, 0)) as avg_output
+from sql_cookbook.EMP
+group by DEPTNO;
+
+select deptno, coalesce(avg(comm), 'NULL') as avg_output
+from sql_cookbook.EMP
+group by DEPTNO;
+
+## Computing Averages Without High and Low Values
+use sql_cookbook;
+select avg(sal)
+ from sql_cookbook.emp
+where sal not in ((select min(sal) from emp),(select max(sal) from emp));
+
+with min_max as (
+	select deptno, 
+		sal,
+		min(sal) over (partition by deptno) as sal_min,
+		max(sal) over (partition by deptno) as sal_max	
+	from sql_cookbook.EMP
+)
+select deptno, avg(sal) as sal_avg, stddev(sal) as sal_std
+ from min_max 
+where sal not in (sal_min,sal_max)
+group by deptno;
+
+
+-- 8. Date Arithmetic
+## adding, subtracting time
+select hiredate - interval 5 day   as hd_minus_5D,
+	hiredate + interval 5 day   as hd_plus_5D,
+	hiredate - interval 5 month as hd_minus_5M,
+	hiredate + interval 5 month as hd_plus_5M,
+	hiredate - interval 5 year  as hd_minus_5Y,
+  	hiredate + interval 5 year  as hd_plus_5Y
+from sql_cookbook.emp
+where deptno=10;
+
+## Determining the Number of Days Between Two Dates
+# bigger value should be passed first to avoid
+select datediff(ward_hd, allen_hd)
+  from (
+		select hiredate as ward_hd
+		from emp
+		where ename = 'WARD'
+) x,
+(
+select hiredate as allen_hd
+from emp
+where ename = 'ALLEN'
+) y;
+
+## Determining the Number of Business Days Between Two Dates
+WITH RECURSIVE t500 AS (SELECT 0 AS value UNION ALL SELECT value + 1 FROM seq WHERE value < 500)
+  SELECT * FROM t500;
+  
+select curdate() as cur_date, HIREDATE, datediff(CURDATE(), hiredate) as diff_date
+from sql_cookbook.EMP;
+ 
+select DEPTNO, avg(datediff(CURDATE(), hiredate)) as diff_date_avg
+ from sql_cookbook.EMP
+ group by deptno;
+ 
+WITH RECURSIVE tmax AS (SELECT 0 AS value UNION ALL SELECT value + 1 FROM seq WHERE value < 15000)
+  SELECT * FROM tmax;
+select DEPTNO, curdate() as cur_date, HIREDATE, datediff(CURDATE(), hiredate) as diff_date_avg
+ from sql_cookbook.EMP;
+
+select ename, hiredate, DATE_FORMAT(hiredate, '%a') as weekday, 
+	DATE_FORMAT(hiredate, '%Y') as year,
+	DATE_FORMAT(hiredate, '%M') as month,
+	DATE_FORMAT(hiredate, '%D') as day
+from sql_cookbook.EMP
+limit 100;
+ 
+## Counting the Occurrences of Weekdays in a Year
