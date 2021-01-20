@@ -709,3 +709,407 @@ from sql_cookbook.EMP
 limit 100;
  
 ## Counting the Occurrences of Weekdays in a Year
+WITH RECURSIVE t500 AS (
+SELECT 0 AS id UNION ALL SELECT id + 1 FROM t500 WHERE id < 500)
+select date_format(
+		date_add(
+			cast(concat(year(current_date),'-01-01') as date),
+	        interval t500.id-1 day), '%W') day,
+     count(*)
+from t500
+where t500.id <= datediff(
+		cast(concat(year(current_date)+1,'-01-01') as date),
+        cast(concat(year(current_date),'-01-01') as date))
+group by date_format(
+			date_add(
+  			cast(concat(year(current_date),'-01-01') as date),
+         	interval t500.id-1 day), '%W');
+
+# second solution 
+
+# create table t500
+create table t500_test as (
+	WITH RECURSIVE t500 AS (SELECT 0 AS value UNION ALL SELECT value + 1 FROM t500 WHERE value < 500)
+	SELECT * FROM t500
+);
+with date_table as (
+select date_format(
+		date_add(
+			cast(concat(year(current_date),'-01-01') as date),
+	        interval t500_test.value-1 day), '%W') as day
+from t500_test
+where value <= datediff(
+		cast(concat(year(current_date)+1,'-01-01') as date),
+        cast(concat(year(current_date),'-01-01') as date))
+)
+select day, count(*)
+from date_table
+group by day;
+
+# third chained common table expressions
+with recursive t500 as (
+	select 0 as value 
+	union all 
+	select value + 1 
+	from t500
+	where value < 500
+), date_table as (
+select date_format(
+		date_add(
+			cast(concat(year(current_date),'-01-01') as date),
+	        interval t500.value-1 day), '%W') as day
+from t500
+where value <= datediff(
+		cast(concat(year(current_date)+1,'-01-01') as date),
+        cast(concat(year(current_date),'-01-01') as date))
+)
+select day, count(*)
+from date_table
+group by day;
+
+
+# Determining the Date Difference Between the Current Record and the Next Record
+with prev_date as (
+	select deptno, empno, hiredate,
+		lag(hiredate, 1) over (partition by deptno order by hiredate) as prev_date
+	from sql_cookbook.EMP
+	)
+select deptno, EMPNO, coalesce(datediff(hiredate, prev_date), 'null') as diff_date
+from prev_date;
+
+-- 10. Identifying Overlapping Date Ranges
+
+
+-- Facebook 
+# ad4ad
+
+create table sql_cookbook.ad4ad (
+date date, 
+user_id integer, 
+event varchar(20), 
+unit_id integer, 
+cost float(8), 
+spend float(8)
+);
+
+
+insert into sql_cookbook.ad4ad values 
+('2019-2-20', 1, 'impression', 3, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-3-20', 1, 'impression', 3, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-3-21', 1, 'impression', 3, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-4-2', 1, 'click', 3, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-4-9', 1, 'create_an_id', 3, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-2-20', 2, 'impression', 3, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-3-20', 2, 'impression', 4, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-3-21', 2, 'impression', 3, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-4-2', 2, 'click', 3, 135, 146);
+insert into sql_cookbook.ad4ad values 
+('2019-4-9', 2, 'create_an_id', 3, 135, 146);
+
+select *
+from sql_cookbook.ad4ad;
+
+# count impression before creating an ad 
+select u.user_id, u.unit_id, count(*) as count_impressions
+from 
+	(
+	select distinct user_id, unit_id
+	from sql_cookbook.ad4ad 
+	where event = 'create_an_id'
+	) u 
+	left join sql_cookbook.ad4ad a
+	on  u.user_id = a.user_id and u.unit_id = a.unit_id
+where event = 'impression'
+group by u.user_id, u.unit_id;
+
+# subquery 
+select distinct user_id, unit_id
+	from sql_cookbook.ad4ad 
+	where event = 'create_an_id';
+	       
+# 
+select user_id, unit_id, count_impressions
+from (
+	select user_id, unit_id,
+		sum(case when event = 'impression' then 1 else 0 end) over (partition by user_id, unit_id)
+		as count_impressions,
+		ROW_NUMBER() over (partition by user_id, unit_id) as rn
+	from sql_cookbook.ad4ad
+	where unit_id in (select unit_id 
+						from sql_cookbook.ad4ad
+						where event = 'create_an_id')
+) a
+where rn = 1;
+
+# spam
+create table sql_cookbook.user_actions (
+date date, 
+user_id integer, 
+post_id integer, 
+action varchar(20),
+extra varchar(20) 
+);
+
+
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 1, 3, 'report', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 2, 3, 'report', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-21', 1, 3, 'view', 'love');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 2, 5, 'view', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 1, 3, 'view', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 1, 1, 'view', 'love');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 1, 2, 'view', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 1, 2, 'report', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 1, 200, 'report', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 4, 3, 'view', 'love');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 3, 3, 'report', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 5, 2, 'report', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 6, 9, 'report', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 2, 4, 'report', 'spam');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 2, 6, 'report', 'nude');
+insert into sql_cookbook.user_actions values 
+('2019-2-20', 1, NULL, 'report', 'spam');
+
+select * from sql_cookbook.user_actions;
+
+
+create table sql_cookbook.reviewer_removals (
+date date, 
+reviewer_id integer, 
+post_id integer
+);
+
+insert into sql_cookbook.reviewer_removals values 
+('2019-2-20', 1, 4);
+insert into sql_cookbook.reviewer_removals values 
+('2019-2-20', 1, 3);
+insert into sql_cookbook.reviewer_removals values 
+('2019-2-22', 2, 9);
+
+# count of reasons 
+select extra as reason, count(distinct post_id) as count_reason
+from sql_cookbook.user_actions
+where datediff(curdate(), date) < 5000 and action = 'report'
+group by extra;
+
+# percentage of spam
+select u.date, u.user_id, count(distinct r.post_id)/ count(distinct u.post_id) as percentage
+from sql_cookbook.user_actions u left join
+	sql_cookbook.reviewer_removals r on 
+	u.post_id = r.post_id
+group by 1, 2;
+
+select user_id, action, extra, date, post_id
+from sql_cookbook.user_actions
+where user_id = 1;
+
+# percentage of correctly identified 
+select u.user_id, count(distinct r.post_id)/count(distinct u.post_id) as percentage_of_correct
+from sql_cookbook.user_actions u left join
+	sql_cookbook.reviewer_removals r 
+	on u.post_id = r.post_id
+where u.action = 'report'
+group by u.user_id;
+
+# distinct is needed 
+
+select u.user_id, count(r.post_id)/count(u.post_id) as percentage_of_correct
+from sql_cookbook.user_actions u left join
+	sql_cookbook.reviewer_removals r 
+	on u.post_id = r.post_id
+where u.action = 'report'
+group by u.user_id;
+
+select user_id, case when post_id = null then 1 else 0 end as flag
+from sql_cookbook.user_actions;
+
+# comment distribution 
+create table sql_cookbook.comments (
+content_id integer, 
+content_type varchar(20),
+target_id integer 
+);
+
+insert into sql_cookbook.comments values 
+(1, 'post', null);
+insert into sql_cookbook.comments values 
+(2, 'comment', 1);
+insert into sql_cookbook.comments values 
+(3, 'post', null);
+insert into sql_cookbook.comments values 
+(4, 'comment', 1);
+insert into sql_cookbook.comments values 
+(5, 'post', null);
+insert into sql_cookbook.comments values 
+(6, 'comment', 1);
+insert into sql_cookbook.comments values 
+(7, 'post', null);
+insert into sql_cookbook.comments values 
+(8, 'comment', 3);
+insert into sql_cookbook.comments values 
+(9, 'video', null);
+insert into sql_cookbook.comments values 
+(10, 'photo', null);
+insert into sql_cookbook.comments values 
+(11, 'photo', null);
+insert into sql_cookbook.comments values 
+(12, 'comment', 11);
+insert into sql_cookbook.comments values 
+(13, 'comment', 11);
+insert into sql_cookbook.comments values 
+(14, 'comment', 10);
+
+select * from sql_cookbook.comments;
+
+
+# distribution of the count 
+select a.content_id, COALESCE(count(b.target_id), 0) as count_comment
+from (
+	select distinct content_id 
+	from sql_cookbook.comments
+	where content_type = 'post'
+	) a left join (
+	select target_id
+	from sql_cookbook.comments
+	where content_type = 'comment'
+	) b ON
+	a.content_id = b. target_id 
+group by content_id;
+
+SELECT num_comments, COUNT(post_id) AS num_posts 
+FROM
+	(SELECT target_id AS post_id, COUNT(*) AS num_comments 
+	FROM sql_cookbook.comments
+	WHERE content_type = 'comment'
+	GROUP BY 1
+) T1 
+GROUP BY 1;
+
+with content_comments as (
+	select a.content_id, COALESCE(count(b.target_id), 0) as count_comment
+	from (
+		select distinct content_id 
+		from sql_cookbook.comments
+		where content_type = 'post'
+		) a left join (
+		select target_id
+		from sql_cookbook.comments
+		where content_type = 'comment'
+		) b ON
+		a.content_id = b. target_id 
+	group by content_id
+)
+ select count_comment, count(count_comment) as count_n
+ from content_comments
+ group by count_comment;
+
+# comments: how to get the distribution of some variables
+# 1. get the independent count (0 needed)
+# 2. select count, count(this variable) group by count
+
+# distribution of each type of content
+
+
+select a.content_id, a.content_type, coalesce(count(distinct b.content_id), 0) as count_per_content
+ from 
+		(
+		select distinct content_id, content_type 
+		from sql_cookbook.comments
+		where content_type != 'comment'
+		) a left join 
+		sql_cookbook.comments b
+		on a.content_id = b.target_id
+group by content_type, content_id;
+
+
+with summary as (
+ select a.content_id, a.content_type, coalesce(count(distinct b.content_id), 0) as count_per_content
+ from 
+		(
+		select distinct content_id, content_type 
+		from sql_cookbook.comments
+		where content_type != 'comment'
+		) a left join 
+		sql_cookbook.comments b
+		on a.content_id = b.target_id
+group by content_type, content_id
+)
+select content_type, count_per_content, count(count_per_content)
+from summary
+group by content_type, count_per_content;
+
+with summary as (
+ select a.content_id, a.content_type, count(distinct b.content_id) as count_per_content
+ from 
+		(
+		select distinct content_id, content_type 
+		from sql_cookbook.comments
+		where content_type != 'comment'
+		) a left join 
+		sql_cookbook.comments b
+		on a.content_id = b.target_id
+group by content_type, content_id
+)
+select content_type, count_per_content, count(count_per_content)
+from summary
+group by content_type, count_per_content;
+		
+## 
+create table sql_cookbook.request (
+sender_id integer,
+send_to_id integer,
+date date);
+
+insert into sql_cookbook.request values (1, 2, '2020-01-05');
+insert into sql_cookbook.request values (1, 3, '2020-01-05');
+insert into sql_cookbook.request values (2, 5, '2020-01-05');
+insert into sql_cookbook.request values (3, 4, '2020-01-05');
+insert into sql_cookbook.request values (1, 6, '2020-01-05');
+
+create table sql_cookbook.accept (
+requester_id integer,
+accepter_id integer,
+date date);
+
+insert into sql_cookbook.accept values (1, 2, '2020-01-05');
+insert into sql_cookbook.accept values (2, 5, '2020-01-05');
+insert into sql_cookbook.accept values (3, 4, '2020-01-05');
+
+select * from sql_cookbook.request;
+
+# acceptance rate 
+with request_distinct as (
+	select DISTINCT sender_id, send_to_id, date
+	from sql_cookbook.request
+)
+select r.sender_id, count(a.requester_id)/count(r.sender_id)
+from request_distinct r left join
+	sql_cookbook.accept a 
+	on r.sender_id = a.requester_id and r.send_to_id = a.accepter_id
+group by r.sender_id;
+
+select DISTINCT sender_id, date
+	from sql_cookbook.request;
+		
