@@ -661,7 +661,10 @@ select deptno, avg(sal) as sal_avg, stddev(sal) as sal_std
 where sal not in (sal_min,sal_max)
 group by deptno;
 
-# quantile 
+# quantile consider percent_rank 
+select sal, 
+	percent_rank() over (partition by deptno order by sal) as percent_rank_sal
+from sql_cookbook.emp;
 
 
 -- 8. Date Arithmetic
@@ -705,6 +708,7 @@ WITH RECURSIVE tmax AS (SELECT 0 AS value UNION ALL SELECT value + 1 FROM seq WH
 select DEPTNO, curdate() as cur_date, HIREDATE, datediff(CURDATE(), hiredate) as diff_date_avg
  from sql_cookbook.EMP;
 
+# very important function to parse the date type data
 select ename, hiredate, DATE_FORMAT(hiredate, '%a') as weekday, 
 	DATE_FORMAT(hiredate, '%Y') as year,
 	DATE_FORMAT(hiredate, '%M') as month,
@@ -843,7 +847,7 @@ select distinct user_id, unit_id
 select user_id, unit_id, count_impressions
 from (
 	select user_id, unit_id,
-		sum(case when event = 'impression' then 1 else 0 end) over (partition by user_id, unit_id)
+		sum(case when event = 'impression' then 1 else 0 end) over (partition by user_id, unit_id) # very interesting way to use window function and case when 
 		as count_impressions,
 		ROW_NUMBER() over (partition by user_id, unit_id) as rn
 	from sql_cookbook.ad4ad
