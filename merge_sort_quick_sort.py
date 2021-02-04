@@ -11,7 +11,9 @@ def mergeSort(nums):
 	# else 
 	left_sorted = mergeSort(nums[:mid])
 	right_sorted = mergeSort(nums[mid:])
-	# merge 
+	# merge three pointers needed 
+	# the k: pointer for merged list
+	# the i and j which are pointers of two arrays
 	i = j = k = 0
 	arr = [0] * (len(left_sorted) + len(right_sorted))
 	while i < len(left_sorted) and j < len(right_sorted):
@@ -23,6 +25,7 @@ def mergeSort(nums):
 			j += 1
 		k += 1
 
+	# fill the the remaining elements with the remaining array
 	# left element 
 	while i < len(left_sorted):
 		arr[k] = left_sorted[i]
@@ -30,7 +33,6 @@ def mergeSort(nums):
 		k += 1 
 	# right element 
 	while j < len(right_sorted):
-		print(j)
 		arr[k] = right_sorted[j]
 		j += 1
 		k += 1 

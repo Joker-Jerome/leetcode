@@ -7,29 +7,31 @@ class Solution:
     def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
         if not head:
             return None
+        # init
+        prev, cur = None, head
         
-        # move the two pointers
-        cur, prev = head, None
-        while m > 1:
+        # move the pointer 
+        for i in range(m-1):
             prev = cur
             cur = cur.next
-            m, n = m - 1, n - 1
             
-        con = prev
+        # mark the junctions
+        con = prev 
         tail = cur
         
-        while n > 0:
-            cur_next = cur.next
+        # after this step cur is at the mth position
+        for i in range(n-m+1):
+            next_node = cur.next
             cur.next = prev
+            # move the pointers
             prev = cur
-            cur = cur_next
-            n -= 1
-            
-        # connect the nodes
-        if con:
-            con.next = prev
-        else:
-            head = con
-        tail.next = cur
+            cur = next_node
         
+        # final connections
+        if con:
+            con.next = prev # 1 - >
+        else:
+            head = prev
+        tail.next = cur
         return head
+            

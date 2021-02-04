@@ -353,6 +353,8 @@ where not exists (
 	
 );
 
+# where exist a joint table 
+
 ## easy 
 select *
 from (
@@ -606,7 +608,7 @@ from (
 			 end as mid_row_extra
 	from (
 		select deptno, sal, rn, rc,  
-			MOD(rc, 2) as odd_even
+			MOD(rc, 2) as odd_even  # most important function here 
 		from sal_row
 		) b 
 	) a 
@@ -658,6 +660,8 @@ select deptno, avg(sal) as sal_avg, stddev(sal) as sal_std
  from min_max 
 where sal not in (sal_min,sal_max)
 group by deptno;
+
+# quantile 
 
 
 -- 8. Date Arithmetic
