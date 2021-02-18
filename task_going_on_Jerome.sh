@@ -854,7 +854,8 @@ sbatch simulation_lasso_enet_he0.4_cp0.05_v3_run.sh
 sbatch simulation_lasso_enet_he0.1_cp0.1_v3_run.sh
 sbatch simulation_lasso_enet_he0.2_cp0.1_v3_run.sh
 sbatch simulation_lasso_enet_he0.4_cp0.1_v3_run.sh
-# bvls enet 
+
+# bvls enet farnam
 dSQ --jobfile simulation_bvls_enet_he0.4_cp0.05_v3.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.4_cp0.05_v3_run.sh
 dSQ --jobfile simulation_bvls_enet_he0.2_cp0.05_v3.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.2_cp0.05_v3_run.sh
 dSQ --jobfile simulation_bvls_enet_he0.1_cp0.05_v3.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.1_cp0.05_v3_run.sh
@@ -870,7 +871,7 @@ sbatch simulation_bvls_enet_he0.1_cp0.1_v3_run.sh
 sbatch simulation_bvls_enet_he0.2_cp0.1_v3_run.sh
 sbatch simulation_bvls_enet_he0.4_cp0.1_v3_run.sh
 
-# ridge 
+# ridge grace
 dSQ --jobfile simulation_ridge_he0.4_cp0.05_v3.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.4_cp0.05_v3_run.sh
 dSQ --jobfile simulation_ridge_he0.2_cp0.05_v3.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.2_cp0.05_v3_run.sh
 dSQ --jobfile simulation_ridge_he0.1_cp0.05_v3.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.1_cp0.05_v3_run.sh
@@ -886,5 +887,92 @@ sbatch simulation_ridge_he0.1_cp0.1_v3_run.sh
 sbatch simulation_ridge_he0.2_cp0.1_v3_run.sh
 sbatch simulation_ridge_he0.4_cp0.1_v3_run.sh
 
+
+# weighted bvls v1
+# enet lasso 
+dSQ --jobfile simulation_lasso_enet_he0.4_cp0.05_v1.txt  -J simu_lasso --mem-per-cpu=8G -t 12:00:00 -p bigmem,day,scavenge --batch-file simulation_lasso_enet_he0.4_cp0.05_v1_run.sh
+dSQ --jobfile simulation_lasso_enet_he0.2_cp0.05_v1.txt  -J simu_lasso --mem-per-cpu=8G -t 12:00:00 -p bigmem,day,scavenge --batch-file simulation_lasso_enet_he0.2_cp0.05_v1_run.sh
+dSQ --jobfile simulation_lasso_enet_he0.1_cp0.05_v1.txt  -J simu_lasso --mem-per-cpu=8G -t 12:00:00 -p bigmem,day,scavenge --batch-file simulation_lasso_enet_he0.1_cp0.05_v1_run.sh
+
+dSQ --jobfile simulation_lasso_enet_he0.4_cp0.1_v1.txt  -J simu_lasso --mem-per-cpu=8G -t 12:00:00 -p bigmem,day,scavenge --batch-file simulation_lasso_enet_he0.4_cp0.1_v1_run.sh
+dSQ --jobfile simulation_lasso_enet_he0.2_cp0.1_v1.txt  -J simu_lasso --mem-per-cpu=8G -t 12:00:00 -p bigmem,day,scavenge --batch-file simulation_lasso_enet_he0.2_cp0.1_v1_run.sh
+dSQ --jobfile simulation_lasso_enet_he0.1_cp0.1_v1.txt  -J simu_lasso --mem-per-cpu=8G -t 12:00:00 -p bigmem,day,scavenge --batch-file simulation_lasso_enet_he0.1_cp0.1_v1_run.sh
+
+sbatch simulation_lasso_enet_he0.1_cp0.05_v1_run.sh
+sbatch simulation_lasso_enet_he0.2_cp0.05_v1_run.sh
+sbatch simulation_lasso_enet_he0.4_cp0.05_v1_run.sh
+sbatch simulation_lasso_enet_he0.1_cp0.1_v1_run.sh
+sbatch simulation_lasso_enet_he0.2_cp0.1_v1_run.sh
+sbatch simulation_lasso_enet_he0.4_cp0.1_v1_run.sh
+
+# bvls enet farnam
+dSQ --jobfile simulation_bvls_enet_he0.4_cp0.05_v1.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.4_cp0.05_v1_run.sh
+dSQ --jobfile simulation_bvls_enet_he0.2_cp0.05_v1.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.2_cp0.05_v1_run.sh
+dSQ --jobfile simulation_bvls_enet_he0.1_cp0.05_v1.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.1_cp0.05_v1_run.sh
+
+dSQ --jobfile simulation_bvls_enet_he0.4_cp0.1_v1.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.4_cp0.1_v1_run.sh
+dSQ --jobfile simulation_bvls_enet_he0.2_cp0.1_v1.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.2_cp0.1_v1_run.sh
+dSQ --jobfile simulation_bvls_enet_he0.1_cp0.1_v1.txt  -J simu_bvls --mem-per-cpu=8G -t 12:00:00 -p bigmem,general,pi_zhao,scavenge --batch-file simulation_bvls_enet_he0.1_cp0.1_v1_run.sh
+
+sbatch simulation_bvls_enet_he0.1_cp0.05_v1_run.sh
+sbatch simulation_bvls_enet_he0.2_cp0.05_v1_run.sh
+sbatch simulation_bvls_enet_he0.4_cp0.05_v1_run.sh
+sbatch simulation_bvls_enet_he0.1_cp0.1_v1_run.sh
+sbatch simulation_bvls_enet_he0.2_cp0.1_v1_run.sh
+sbatch simulation_bvls_enet_he0.4_cp0.1_v1_run.sh
+
+# ridge grace
+dSQ --jobfile simulation_ridge_he0.4_cp0.05_v1.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.4_cp0.05_v1_run.sh
+dSQ --jobfile simulation_ridge_he0.2_cp0.05_v1.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.2_cp0.05_v1_run.sh
+dSQ --jobfile simulation_ridge_he0.1_cp0.05_v1.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.1_cp0.05_v1_run.sh
+
+dSQ --jobfile simulation_ridge_he0.4_cp0.1_v1.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.4_cp0.1_v1_run.sh
+dSQ --jobfile simulation_ridge_he0.2_cp0.1_v1.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.2_cp0.1_v1_run.sh
+dSQ --jobfile simulation_ridge_he0.1_cp0.1_v1.txt  -J simu_ridge --mem-per-cpu=8G -t 12:00:00 -p bigmem,day --batch-file simulation_ridge_he0.1_cp0.1_v1_run.sh
+
+sbatch simulation_ridge_he0.1_cp0.05_v1_run.sh
+sbatch simulation_ridge_he0.2_cp0.05_v1_run.sh
+sbatch simulation_ridge_he0.4_cp0.05_v1_run.sh
+sbatch simulation_ridge_he0.1_cp0.1_v1_run.sh
+sbatch simulation_ridge_he0.2_cp0.1_v1_run.sh
+sbatch simulation_ridge_he0.4_cp0.1_v1_run.sh
+
+# check the file  
+
+# v2 results
+754
+he2_0.1_causalp_0.05_ss_500
+736
+he2_0.1_causalp_0.1_ss_500
+755
+he2_0.2_causalp_0.05_ss_500
+741
+he2_0.2_causalp_0.1_ss_500
+756
+he2_0.4_causalp_0.05_ss_500
+744
+he2_0.4_causalp_0.1_ss_500
+
+
+# dsq
+
+dSQ --jobfile summary_R2_plot.txt -J R2_summary_plot --mem-per-cpu=32G -t 12:00:00 -p bigmem,day --batch-file summary_R2_plot_run.sh
+
+
+# real data 
+
+submit_wbvls_ridge_real_10000.sh
+
+# summarize the results real data based on the RData
+
+# ridge 
+/home/zy92/project/GTEX/results_ridge/pruned
+
+# delete the empty files
+find . -type f -empty -delete
+
+for i in `ls`; do find $i -type f -empty -delete; done 
+
+# model for non-coding genes 
 
 
