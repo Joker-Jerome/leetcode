@@ -976,3 +976,127 @@ for i in `ls`; do find $i -type f -empty -delete; done
 # model for non-coding genes 
 
 
+cp -r adjusted_expr_pc /ysm-gpfs/pi/zhao-data/zy92/GTEx_V8/processed_data
+
+/home/zy92/scratch60/GTEx_V8
+
+# example 
+
+#!/bin/bash
+#SBATCH --output cp_exp_pc.out
+#SBATCH --array 0-2000
+#SBATCH --job-name bvls_enet_7
+#SBATCH --mem-per-cpu=16G -t 1:00:00 -p bigmem,day
+
+# DO NOT EDIT LINE BELOW
+/gpfs/loomis/apps/avx/software/dSQ/1.05/dSQBatch.py --job-file /gpfs/loomis/project/zhao/zy92/twas_bvls/code/submit/bvls_enet_real_brain_task_7.txt --status-dir /gpfs/loomis/project/zhao/zy92/twas_bvls/code/submit
+cp -r cd /gpfs/loomis/scratch60/zhao/zy92/GTEx_V8/adjusted_expr_pc /ysm-gpfs/pi/zhao-data/zy92/GTEx_V8/processed_data
+
+
+# temp save 
+
+# LNC 
+
+par_list <- c(1, 10, 100, 1000)
+for (par in par_list ) {
+
+    y_dir = "/gpfs/loomis/project/zhao/zy92/GTEX/adjusted_lnc_expr/chr"
+    gene_list = list()
+    for (i in 1:22) {
+        tmp_dir = paste0(y_dir, i)
+        gene_list[[i]] = list.files(tmp_dir)
+    }
+
+    for (i in 1:22) {
+        task_str <- paste0("ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R ",  
+        i, " ", 1:length(gene_list[[i]]) , 
+        " /gpfs/loomis/project/zhao/zy92/GTEX/genotype/cis_loc_lnc_pruned/ /gpfs/loomis/project/zhao/zy92/GTEX/adjusted_lnc_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output_lnc/ ",
+        par)
+
+        # task file 
+        file_name <- paste0("./submit/wbvls_lnc_ridge_real_", par, "_", i, ".txt")
+        fileConn <- file(file_name)
+        writeLines(task_str, fileConn)
+        close(fileConn)
+
+    }
+
+     # dsq
+    task_list <- paste0("dSQ --jobfile ", 
+                        "wbvls_lnc_ridge_real_", par, "_", 1:22, ".txt",  
+                        " -J wbvls_lnc --mem-per-cpu=8G -t 2:00:00 -p bigmem,day,scavenge --batch-file ", 
+                        "wbvls_lnc_ridge_real_", par, "_", 1:22, "_run.sh")
+
+
+
+    # task file 
+    file_name <- paste0("./submit/dsq_wbvls_lnc_ridge_real_", par, ".sh")
+    fileConn <- file(file_name)
+    writeLines(task_list, fileConn)
+    close(fileConn)
+
+    # submit the dsq file
+
+    run_list <- paste0("sbatch ", 
+                        "wbvls_lnc_ridge_real_",  par, "_", 1:22, "_run.sh")
+
+    fileConn <- file(paste0("./submit/submit_wbvls_lnc_ridge_real_", par, ".sh"))
+    writeLines(run_list, fileConn)
+    close(fileConn)
+}
+
+
+# temp save 
+
+# mirna
+
+par_list <- c(1, 10, 100, 1000)
+for (par in par_list ) {
+
+    y_dir = "/gpfs/loomis/project/zhao/zy92/GTEX/adjusted_mirna_expr/chr"
+    gene_list = list()
+    for (i in 1:22) {
+        tmp_dir = paste0(y_dir, i)
+        gene_list[[i]] = list.files(tmp_dir)
+    }
+
+    for (i in 1:22) {
+        task_str <- paste0("ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R ",  
+        i, " ", 1:length(gene_list[[i]]) , 
+        " /gpfs/loomis/project/zhao/zy92/GTEX/genotype/cis_loc_mirna_pruned/ /gpfs/loomis/project/zhao/zy92/GTEX/adjusted_mirna_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output_mirna/ ",
+        par)
+
+        # task file 
+        file_name <- paste0("./submit/wbvls_mirna_ridge_real_", par, "_", i, ".txt")
+        fileConn <- file(file_name)
+        writeLines(task_str, fileConn)
+        close(fileConn)
+
+    }
+
+     # dsq
+    task_list <- paste0("dSQ --jobfile ", 
+                        "wbvls_mirna_ridge_real_", par, "_", 1:22, ".txt",  
+                        " -J wbvls_mirna --mem-per-cpu=8G -t 2:00:00 -p bigmem,day,scavenge --batch-file ", 
+                        "wbvls_mirna_ridge_real_", par, "_", 1:22, "_run.sh")
+
+
+
+    # task file 
+    file_name <- paste0("./submit/dsq_wbvls_mirna_ridge_real_", par, ".sh")
+    fileConn <- file(file_name)
+    writeLines(task_list, fileConn)
+    close(fileConn)
+
+    # submit the dsq file
+
+    run_list <- paste0("sbatch ", 
+                        "wbvls_mirna_ridge_real_",  par, "_", 1:22, "_run.sh")
+
+    fileConn <- file(paste0("./submit/submit_wbvls_mirna_ridge_real_", par, ".sh"))
+    writeLines(run_list, fileConn)
+    close(fileConn)
+}
+
+
+
