@@ -1098,5 +1098,82 @@ for (par in par_list ) {
     close(fileConn)
 }
 
+# summary R2 Farnam 
+Submitted batch job 54378444
+
+# summary R2 LNC
+54462101
+
+# problematic cases 
+weighted_bvls_ridge_gene1298_100.RData chr1
+weighted_bvls_ridge_gene410_10.RData chr19
+
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1298 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 19 410 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 10
+remaining_task.txt
+dSQ --jobfile remaining_task.txt -J remaining --mem-per-cpu=16G -t 10:00:00 -p bigmem,day --batch-file remaining_task_run.sh
+
+wbvls_general_summary_real_subset.txt
+dSQ --jobfile wbvls_general_summary_real_subset.txt -J summary --mem-per-cpu=125G -t 10:00:00 -p bigmem,day --batch-file wbvls_general_summary_real_subset_run.sh
+
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1338 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1298 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 19 410 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 10
+
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1338 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1362 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1415 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1431 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1723 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 1 1756 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+
+#chr 19 very strange 
+input_dir = "/ysm-gpfs/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/pruned/chr1/"
+file_vec = list.files(input_dir, pattern = "*1000.RData")
+error_vec = c()
+print(paste0("INFO: length ", length(file_vec)))
+for (i in 1:length(file_vec)) {
+#for (i in 1:5) {
+    
+        print(paste0("INFO: ", i, " ", file_vec[i]))
+    
+    #tryCatch({
+    ln <- load(paste0(input_dir, file_vec[i]))
+    rm(list = ln)
+    
+}
+
+# format the weights 
+
+debugging: 
+dsq-wbvls_ridge_real_10_1-13868414_0117-bigmem03.out
 
 
+# checking results
+for i in `ls`; 
+do  
+echo $i
+ls $i | grep 1.RData | wc -l
+ls $i | grep 10.RData | wc -l
+ls $i | grep 100.RData | wc -l
+ls $i | grep 1000.RData | wc -l
+done; 
+
+# par 10 chr 20, 21, 22
+
+sbatch wbvls_ridge_real_10_20_run.sh
+sbatch wbvls_ridge_real_10_21_run.sh
+sbatch wbvls_ridge_real_10_22_run.sh
+
+
+# SRA toolkit
+module load SRA-Toolkit/2.10.8-centos_linux64
+
+prefetch
+
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 2 33 /gpfs/loomis/project/zhao/zy92/GTEX/genotype/cis_loc_mirna_pruned/ /gpfs/loomis/project/zhao/zy92/GTEX/adjusted_mirna_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output_mirna/ 100
+ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_ridge_real.R 2 33 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_output/ 100
+
+
+# 16249236
