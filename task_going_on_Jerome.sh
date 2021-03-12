@@ -618,6 +618,10 @@ dSQ --jobfile simulation_ridge_he0.1_cp0.1.txt  -J simu_bvls --mem-per-cpu=8G -t
 # twas pipeline 
 /gpfs/loomis/project/zhao/zy92/utmost/pipeline
 /home/zy92/project/twas_bvls/code/submit/pipeline
+/gpfs/loomis/project/zhao/zy92/utmost_update/utmost_update/code/submit/pipeline
+/gpfs/loomis/project/zhao/zy92/twas_bvls/code/submit/pipeline/step1.sh
+/home/zy92/jupyter_v2/grace_project/twas_bvls/code/submit/pipeline/step1.sh
+grace_project/twas_bvls/code/submit/pipeline/step1.sh
 
 
 # test single tissue test
@@ -1177,3 +1181,199 @@ ulimit -c 0; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls
 
 
 # 16249236
+16254266 rerun 
+
+cp -r beta1 /home/zy92/scratch60/wbvls_weights/
+cp -r beta10 /home/zy92/scratch60/wbvls_weights/;
+cp -r beta100 /home/zy92/scratch60/wbvls_weights/;
+cp -r beta1000 /home/zy92/scratch60/wbvls_weights/;
+
+
+# format a weight folder 
+it usually takes about 2 hrs
+but for chr1 and chr2 more than 2.5 hrs
+chr1 3 hrs 
+
+# create table for building the database 
+3 hrs 
+
+# use that to build the database
+task name: 56186117 over 8(max) hr per tissue (Farnam)
+task name: 16455583 over 5 hr per tissue (Grace)
+
+# change the /gpfs/loomis/project/zhao/zy92/twas_bvls/code/submit/build_database_run.sh as original 
+dSQ --jobfile build_database_subset_task.txt -J database_building --mem-per-cpu=16G -t 24:00:00 -p bigmem,day --batch-file build_database_subset_task_run.sh
+cd /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_table/merged/
+sbatch /gpfs/loomis/project/zhao/zy92/twas_bvls/code/submit/build_database_subset_task_run.sh
+
+
+# database zhao project 
+/home/zy92/project/UTMOST_test_1107/UTMOST/sample_data/
+
+# single tissue covariance 
+16470413
+
+python2 ./single_tissue_covariance.py \
+--weight_db sample_data/database_wbvls/Whole_Blood.db \
+--input_folder sample_data/dosage/ \
+--covariance_output sample_data/covariance_wbvls/Whole_Blood.txt.gz
+
+# build database
+
+dSQ --jobfile build_database_task.txt -J database_building --mem-per-cpu=8G -t 48:00:00 -p bigmem,week --batch-file build_database_task_run.sh
+sbatch /home/zy92/project/twas_bvls/code/submit/build_database_task_run.sh
+
+dSQ --jobfile build_database_task.txt -J database_building --mem-per-cpu=8G -t 48:00:00 -p week --batch-file build_database_task_run.sh
+sbatch /home/zy92/project/twas_bvls/code/submit/build_database_task_run.sh
+# single tissue cov 
+16515638 32G 
+16515699 64G
+16515789 64G
+16515988 64G
+
+# single tissue test 
+
+/home/zy92/scratch60/UTMOST/sample_data
+cd /gpfs/loomis/project/zhao/zy92/twas_bvls/code/submit/pipeline
+bash WenC_step1_updated_wbvls.sh
+bash Cisplatin_step1_updated_all_wbvls.sh
+bash ADV_step1_updated_all_wbvls.sh
+
+bash WenC_step1_updated_wbvlsf.sh
+bash Cisplatin_step1_updated_all_wbvlsf.sh
+bash ADV_step1_updated_all_wbvlsf.sh
+
+
+
+# RNA seq 
+
+module load STAR/2.6.0c-foss-2018a
+
+
+# mapping 
+STAR \
+--runThreadN 8 --genomeDir /home/zy92/scratch60/RNA_seq/star/genome/ \
+--sjdbGTFfile /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+--readFilesIn  \
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_2.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601541_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601542_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601543_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601544_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601545_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601546_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601547_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601548_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601549_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601550_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601551_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601552_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601553_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601554_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601555_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601556_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601557_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601558_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601559_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601560_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601561_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601562_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601563_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601564_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601565_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601566_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601567_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601568_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601569_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601570_1.fastq \
+--twopassMode Basic
+
+# joint covariance 
+joint_covariance_wbvls_task.txt
+dSQ --jobfile joint_covariance_wbvls_task.txt -J joint_cov --mem-per-cpu=360G -t 48:00:00 -p bigmem --batch-file joint_covariance_wbvls_task_run.sh
+sbatch joint_covariance_wbvls_task_run.sh
+
+Array Job ID: 56497426_0
+Cluster: farnam
+User/Group: zy92/zhao
+State: COMPLETED (exit code 0)
+Cores: 1
+CPU Utilized: 03:58:58
+CPU Efficiency: 98.17% of 04:03:26 core-walltime
+Job Wall-clock time: 04:03:26
+Memory Utilized: 436.29 GB
+Memory Efficiency: 85.21% of 512.00 GB
+
+# mapping reads and generating BAM files
+STAR \
+--runThreadN 8 --genomeDir /home/zy92/scratch60/RNA_seq/star/genome/ \
+--sjdbGTFfile /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+--readFilesIn \
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_2.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601541_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601542_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601543_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601544_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601545_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601546_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601547_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601548_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601549_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601550_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601551_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601552_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601553_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601554_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601555_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601556_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601557_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601558_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601559_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601560_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601561_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601562_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601563_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601564_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601565_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601566_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601567_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601568_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601569_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601570_1.fastq \
+--outSAMtype BAM SortedByCoordinate Unsorted
+
+# limited memory version
+STAR \
+--runThreadN 8 --genomeDir /home/zy92/scratch60/RNA_seq/star/genome/ \
+--sjdbGTFfile /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+--readFilesIn \
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_2.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601541_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601542_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601543_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601544_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601545_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601546_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601547_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601548_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601549_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601550_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601551_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601552_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601553_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601554_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601555_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601556_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601557_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601558_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601559_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601560_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601561_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601562_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601563_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601564_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601565_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601566_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601567_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601568_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601569_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601570_1.fastq \
+--outSAMtype BAM SortedByCoordinate Unsorted \
+--limitBAMsortRAM 32157822963
+
+# quantify the RSEM
+STAR \
+--runThreadN 8 --genomeDir /home/zy92/scratch60/RNA_seq/star/genome/ \
+--sjdbGTFfile /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+--readFilesIn \
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_2.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601541_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601542_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601543_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601544_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601545_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601546_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601547_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601548_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601549_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601550_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601551_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601552_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601553_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601554_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601555_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601556_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601557_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601558_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601559_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601560_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601561_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601562_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601563_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601564_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601565_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601566_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601567_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601568_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601569_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601570_1.fastq \
+--quantMode TranscriptomeSAM
+
+# RSEM reference 
+/home/zy92/scratch60/RNA_seq/student_tools/RSEM/bin/rsem-prepare-reference \
+--gtf /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+/home/zy92/scratch60/RNA_seq/star/genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa ./ref
+
+# quantify the expession levels
+
+/home/zy92/scratch60/RNA_seq/student_tools/RSEM/bin/rsem-calculate-expression --bam --no-bam-output -p 8  \
+/home/zy92/scratch60/RNA_seq/star/nash_rsem/Aligned.toTranscriptome.out.bam /home/zy92/scratch60/RNA_seq/star/nash_rsem/ref /home/zy92/scratch60/RNA_seq/star/nash_rsem/Quant \
+>& /home/zy92/scratch60/RNA_seq/star/nash_rsem/rsem_quant.log
+
+# joint association test 
+/gpfs/loomis/project/zhao/zy92/twas_bvls/code/submit/pipeline/WenC_step3_updated_normalized_pruned.sh
+./grace_project/twas_bvls/code/submit/pipeline/WenC_step3_updated_normalized_pruned.sh
+
+# RNA seq pipeline should process the data individually
+
+# mapping reads and generating BAM files
+STAR \
+--runThreadN 8 --genomeDir /home/zy92/scratch60/RNA_seq/star/genome/ \
+--sjdbGTFfile /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+--readFilesIn \
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_2.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601541_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601542_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601543_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601544_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601545_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601546_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601547_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601548_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601549_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601550_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601551_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601552_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601553_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601554_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601555_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601556_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601557_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601558_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601559_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601560_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601561_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601562_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601563_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601564_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601565_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601566_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601567_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601568_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601569_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601570_1.fastq \
+--outSAMtype BAM SortedByCoordinate Unsorted
+
+# limited memory version
+STAR \
+--runThreadN 8 --genomeDir /home/zy92/scratch60/RNA_seq/star/genome/ \
+--sjdbGTFfile /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+--readFilesIn \
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_2.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601541_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601542_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601543_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601544_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601545_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601546_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601547_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601548_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601549_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601550_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601551_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601552_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601553_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601554_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601555_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601556_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601557_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601558_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601559_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601560_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601561_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601562_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601563_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601564_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601565_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601566_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601567_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601568_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601569_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601570_1.fastq \
+--outSAMtype BAM SortedByCoordinate Unsorted \
+--limitBAMsortRAM 32157822963
+
+# quantify the RSEM
+STAR \
+--runThreadN 8 --genomeDir /home/zy92/scratch60/RNA_seq/star/genome/ \
+--sjdbGTFfile /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+--readFilesIn \
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR4444990_2.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601541_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601542_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601543_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601544_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601545_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601546_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601547_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601548_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601549_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601550_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601551_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601552_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601553_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601554_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601555_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601556_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601557_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601558_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601559_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601560_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601561_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601562_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601563_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601564_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601565_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601566_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601567_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601568_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601569_1.fastq,/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/SRR8601570_1.fastq \
+--quantMode TranscriptomeSAM
+
+# RSEM reference 
+/home/zy92/scratch60/RNA_seq/student_tools/RSEM/bin/rsem-prepare-reference \
+--gtf /home/zy92/scratch60/RNA_seq/star/Homo_sapiens.GRCh38.79.gtf \
+/home/zy92/scratch60/RNA_seq/star/genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa ./ref
+
+# quantify the expession levels
+
+/home/zy92/scratch60/RNA_seq/student_tools/RSEM/bin/rsem-calculate-expression --bam --no-bam-output -p 8  \
+/home/zy92/scratch60/RNA_seq/star/nash_rsem/Aligned.toTranscriptome.out.bam /home/zy92/scratch60/RNA_seq/star/nash_rsem/ref /home/zy92/scratch60/RNA_seq/star/nash_rsem/Quant \
+>& /home/zy92/scratch60/RNA_seq/star/nash_rsem/rsem_quant.log
+
+for i in $(ls raw_data); do STAR --genomeDir index.150 \
+--readFilesIn raw_data/$i\_1.fq.gz,raw_data/$i\_2.fq.gz \
+--runThreadN 20 --outFileNamePrefix aligned/$i. \
+--outSAMtype BAM SortedByCoordinate \
+--quantMode GeneCounts \
+--sjdbGTFfile GRCm38.90.gtf \
+--readFilesCommand zcat ; done
+
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/ 
+
+
+# for loop file 
+
+index=$1
+RAW_DIR=/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/ 
+PREFIX_TOTAL=(SRR4444990_1 SRR4444990_2 SRR8601541_1 SRR8601542_1 SRR8601543_1 SRR8601544_1 SRR8601545_1 SRR8601546_1 SRR8601547_1 SRR8601548_1 SRR8601549_1 SRR8601550_1 SRR8601551_1 SRR8601552_1 SRR8601553_1 SRR8601554_1 SRR8601555_1 SRR8601556_1 SRR8601557_1 SRR8601558_1 SRR8601559_1 SRR8601560_1 SRR8601561_1 SRR8601562_1 SRR8601563_1 SRR8601564_1 SRR8601565_1 SRR8601566_1 SRR8601567_1 SRR8601568_1 SRR8601569_1 SRR8601570_1)
+
+for prefix in ${PREFIX_TOTAL[$index]}
+do
+
+# grace_project/nash/RNA_seq_pipeline.sh
+
+
+
+
