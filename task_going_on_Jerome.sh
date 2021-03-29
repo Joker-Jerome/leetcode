@@ -1243,6 +1243,8 @@ bash WenC_step1_updated_wbvlsf.sh
 bash Cisplatin_step1_updated_all_wbvlsf.sh
 bash ADV_step1_updated_all_wbvlsf.sh
 
+# these files have been changed to "only target Whole blood tissue"
+ 
 
 
 # RNA seq 
@@ -1363,6 +1365,8 @@ for i in $(ls raw_data); do STAR --genomeDir index.150 \
 /gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/ 
 
 
+
+
 # for loop file 
 
 index=$1
@@ -1374,6 +1378,24 @@ do
 
 # grace_project/nash/RNA_seq_pipeline.sh
 
+# collect RNA seq results
+rsem-generate-data-matrix sampleA.[genes/isoforms].results sampleB.[genes/isoforms].results ... > output_name.counts.matrix
+
+/home/zy92/scratch60/RNA_seq/student_tools/RSEM/bin/rsem-generate-data-matrix \
+SRR8601541_1.Quant.isoforms.results SRR8601542_1.Quant.isoforms.results SRR8601543_1.Quant.isoforms.results SRR8601544_1.Quant.isoforms.results SRR8601545_1.Quant.isoforms.results SRR8601546_1.Quant.isoforms.results SRR8601547_1.Quant.isoforms.results SRR8601548_1.Quant.isoforms.results SRR8601549_1.Quant.isoforms.results SRR8601550_1.Quant.isoforms.results SRR8601551_1.Quant.isoforms.results SRR8601552_1.Quant.isoforms.results SRR8601553_1.Quant.isoforms.results SRR8601554_1.Quant.isoforms.results SRR8601555_1.Quant.isoforms.results SRR8601556_1.Quant.isoforms.results SRR8601557_1.Quant.isoforms.results SRR8601558_1.Quant.isoforms.results SRR8601559_1.Quant.isoforms.results SRR8601560_1.Quant.isoforms.results SRR8601561_1.Quant.isoforms.results SRR8601562_1.Quant.isoforms.results SRR8601563_1.Quant.isoforms.results SRR8601564_1.Quant.isoforms.results SRR8601565_1.Quant.isoforms.results SRR8601566_1.Quant.isoforms.results SRR8601567_1.Quant.isoforms.results SRR8601568_1.Quant.isoforms.results SRR8601569_1.Quant.isoforms.results SRR8601570_1.Quant.isoforms.results \
+> isoforms.counts.matrix
+
+# single tissue test 
+16817716_48        bigmem      single_ADV_Whole_B zy92    R   22:16:57 1-00:00:00     1     1       256G p08r06n34
+16817715_48        bigmem      single_Cisplatin_W zy92    R   23:17:05 1-00:00:00     1     1       256G bigmem03
+16817715_45        bigmem      single_Cisplatin_W zy92    R   23:19:48 1-00:00:00     1     1       256G bigmem03
+
+57262538_[0-48]    pi_zhao,big single_ADV_Whole_B zy92   PD       0:00 2-00:00:00     1     1       160G (QOSMaxJobsPerUserLimit)
+57262535_[2-48]    pi_zhao,big single_Cisplatin_W zy92   PD       0:00 2-00:00:00     1     1       160G (QOSMaxJobsPerUserLimit)
+57262534_[25-48]   pi_zhao,big single_Allopurinol zy92   PD       0:00 2-00:00:00     1     1       1
 
 
+# Spearman correlation test 
+# compress the joint cov
+61324559_[0-3]     pi_zhao,big compress_cov       zy92   PD       0:00 1-00:00:00     1     1
 
