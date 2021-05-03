@@ -1398,4 +1398,151 @@ SRR8601541_1.Quant.isoforms.results SRR8601542_1.Quant.isoforms.results SRR86015
 # Spearman correlation test 
 # compress the joint cov
 61324559_[0-3]     pi_zhao,big compress_cov       zy92   PD       0:00 1-00:00:00     1     1
+61427518
+
+# grace jupyter servers 
+18426889 jupyterlab
+18427054 jupyter
+
+# new RNA seq 
+
+# for loop file 
+
+index=$1
+RAW_DIR=/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/nash/GSE135251/ 
+PREFIX_TOTAL=(SRR4444990_1 SRR4444990_2 SRR8601541_1 SRR8601542_1 SRR8601543_1 SRR8601544_1 SRR8601545_1 SRR8601546_1 SRR8601547_1 SRR8601548_1 SRR8601549_1 SRR8601550_1 SRR8601551_1 SRR8601552_1 SRR8601553_1 SRR8601554_1 SRR8601555_1 SRR8601556_1 SRR8601557_1 SRR8601558_1 SRR8601559_1 SRR8601560_1 SRR8601561_1 SRR8601562_1 SRR8601563_1 SRR8601564_1 SRR8601565_1 SRR8601566_1 SRR8601567_1 SRR8601568_1 SRR8601569_1 SRR8601570_1)
+
+for prefix in ${PREFIX_TOTAL[$index]}
+do
+
+# grace_project/nash/RNA_seq_pipeline.sh
+
+# collect RNA seq results
+rsem-generate-data-matrix sampleA.[genes/isoforms].results sampleB.[genes/isoforms].results ... > output_name.counts.matrix
+
+/home/zy92/scratch60/RNA_seq/student_tools/RSEM/bin/rsem-generate-data-matrix \
+SRR8601541_1.Quant.isoforms.results SRR8601542_1.Quant.isoforms.results SRR8601543_1.Quant.isoforms.results SRR8601544_1.Quant.isoforms.results SRR8601545_1.Quant.isoforms.results SRR8601546_1.Quant.isoforms.results SRR8601547_1.Quant.isoforms.results SRR8601548_1.Quant.isoforms.results SRR8601549_1.Quant.isoforms.results SRR8601550_1.Quant.isoforms.results SRR8601551_1.Quant.isoforms.results SRR8601552_1.Quant.isoforms.results SRR8601553_1.Quant.isoforms.results SRR8601554_1.Quant.isoforms.results SRR8601555_1.Quant.isoforms.results SRR8601556_1.Quant.isoforms.results SRR8601557_1.Quant.isoforms.results SRR8601558_1.Quant.isoforms.results SRR8601559_1.Quant.isoforms.results SRR8601560_1.Quant.isoforms.results SRR8601561_1.Quant.isoforms.results SRR8601562_1.Quant.isoforms.results SRR8601563_1.Quant.isoforms.results SRR8601564_1.Quant.isoforms.results SRR8601565_1.Quant.isoforms.results SRR8601566_1.Quant.isoforms.results SRR8601567_1.Quant.isoforms.results SRR8601568_1.Quant.isoforms.results SRR8601569_1.Quant.isoforms.results SRR8601570_1.Quant.isoforms.results \
+> isoforms.counts.matrix
+
+source /gpfs/loomis/home.grace/zy92/R/R_env.sh; module load R/3.6.1-foss-2018b-X11-20180604; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_utmost_v1.R 1 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /gpfs/loomis/project/zhao/zy92/GTEX/simulation_results/v1/  0.1 0.05 500
+source /gpfs/loomis/home.grace/zy92/R/R_env.sh; /gpfs/loomis/home.grace/zy92/R_farnam/bin/Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_utmost_v1.R 1 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /gpfs/loomis/project/zhao/zy92/GTEX/simulation_results/v1/  0.1 0.05 500
+source /gpfs/loomis/home.grace/zy92/R/R_env.sh; module load R/3.6.1-foss-2018b-X11-20180604; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_utmost_v1.R 1 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /gpfs/loomis/project/zhao/zy92/GTEX/simulation_results/v1/  0.1 0.05 500
+
+source /gpfs/loomis/home.grace/zy92/R/R_env.sh; /gpfs/loomis/home.grace/zy92/R_farnam/bin/Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_utmost_v1.R 2 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /gpfs/loomis/project/zhao/zy92/GTEX/simulation_results/v1/  0.1 0.05 500
+cd /gpfs/loomis/home.grace/zy92/R_farnam/bin/; ./Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_utmost_v1.R 1 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /gpfs/loomis/project/zhao/zy92/GTEX/simulation_results/v1/  0.1 0.05 500
+
+
+R/3.5.3-foss-2018a-X11-20180131
+
+# UTMOST simulation 
+# v1 
+bash weighted_utmost_simulation_v1.sh
+Submitted batch job 19987154
+Submitted batch job 19987155
+Submitted batch job 19987156
+Submitted batch job 19987157
+Submitted batch job 19987158
+Submitted batch job 19987159
+
+bash weighted_utmost_simulation_v1.sh
+Submitted batch job 19997935
+Submitted batch job 19997936
+Submitted batch job 19997937
+Submitted batch job 19997938
+Submitted batch job 19997986
+Submitted batch job 19997987
+
+bash weighted_utmost_simulation_v1.sh
+Submitted batch job 20001387
+Submitted batch job 20001388
+Submitted batch job 20001389
+Submitted batch job 20001390
+Submitted batch job 20001391
+Submitted batch job 20001392
+
+
+# v2 
+source /gpfs/loomis/home.grace/zy92/R/R_env.sh; module load R/3.6.1-foss-2018b-X11-20180604; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_utmost_v2.R 1 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /gpfs/loomis/project/zhao/zy92/GTEX/simulation_results/v2/  0.1 0.1 500
+
+bash weighted_utmost_simulation_v2.sh
+Submitted batch job 19989805
+Submitted batch job 19989806
+Submitted batch job 19989807
+Submitted batch job 19989808
+Submitted batch job 19989809
+Submitted batch job 19989810
+
+bash weighted_utmost_simulation_v2.sh
+Submitted batch job 19997991
+Submitted batch job 19997992
+Submitted batch job 19997993
+Submitted batch job 19997994
+Submitted batch job 19997995
+Submitted batch job 19997996
+
+bash weighted_utmost_simulation_v2.sh
+Submitted batch job 20001374
+Submitted batch job 20001375
+Submitted batch job 20001376
+Submitted batch job 20001377
+Submitted batch job 20001378
+Submitted batch job 20001386
+
+
+# v3
+source /gpfs/loomis/home.grace/zy92/R/R_env.sh; module load R/3.6.1-foss-2018b-X11-20180604; Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_utmost_v3.R 1 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /gpfs/loomis/project/zhao/zy92/GTEX/simulation_results/v3/  0.1 0.1 500
+
+
+bash weighted_utmost_simulation_v3.sh
+Submitted batch job 19999682
+Submitted batch job 19999683
+Submitted batch job 19999684
+Submitted batch job 19999685
+Submitted batch job 19999686
+Submitted batch job 19999687
+
+bash weighted_utmost_simulation_v3.sh
+Submitted batch job 20001322
+Submitted batch job 20001323
+Submitted batch job 20001324
+Submitted batch job 20001325
+Submitted batch job 20001326
+Submitted batch job 20001327
+
+
+# pearson without sample size 
+bash dsq_wbvls_ridge_pearson_real_1.sh
+bash dsq_wbvls_ridge_pearson_real_10.sh
+bash dsq_wbvls_ridge_pearson_real_100.sh
+bash dsq_wbvls_ridge_pearson_real_1000.sh
+
+bash submit_wbvls_ridge_pearson_real_1.sh
+bash submit_wbvls_ridge_pearson_real_10.sh
+bash submit_wbvls_ridge_pearson_real_100.sh
+bash submit_wbvls_ridge_pearson_real_1000.sh
+
+# rerun 
+from 20015697
+to 20017679
+
+summary 20209866
+sbatch wbvls_un_pearson_summary_real_subset_v1_run.sh
+Submitted batch job 20220397
+week Submitted batch job 20222170
+
+# par = 1000 group 
+
+bash submit_wbvls_ridge_pearson_real_1000.sh
+Submitted batch job 20229694
+to 
+Submitted batch job 20229715
+
+
+
+
+
+
+
+
+
 
