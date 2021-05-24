@@ -1538,11 +1538,329 @@ to
 Submitted batch job 20229715
 
 
+(base) -bash-4.2$ bash weighted_utmost_simulation_v1.sh
+Submitted batch job 20986503
+Submitted batch job 20986504
+Submitted batch job 20986505
+Submitted batch job 20986506
+Submitted batch job 20986507
+Submitted batch job 20986508
+(base) -bash-4.2$ bash weighted_utmost_simulation_v2.sh
+Submitted batch job 20986509
+Submitted batch job 20986510
+Submitted batch job 20986511
+Submitted batch job 20986512
+Submitted batch job 20986513
+Submitted batch job 20986514
+(base) -bash-4.2$ bash weighted_utmost_simulation_v3.sh
+Submitted batch job 20986515
+Submitted batch job 20986516
+Submitted batch job 20986517
+Submitted batch job 20986518
+Submitted batch job 20986519
+Submitted batch job 20986520
+
+
+bash weighted_utmost_simulation_v1.sh
+Submitted batch job 21463768
+Submitted batch job 21463769
+Submitted batch job 21463770
+Submitted batch job 21463771
+Submitted batch job 21463772
+Submitted batch job 21463773
+(base) -bash-4.2$ bash weighted_utmost_simulation_v2.sh
+Submitted batch job 21463774
+Submitted batch job 21463775
+Submitted batch job 21463776
+Submitted batch job 21463777
+Submitted batch job 21463778
+Submitted batch job 21463779
+(base) -bash-4.2$ bash weighted_utmost_simulation_v3.sh
+Submitted batch job 21463780
+Submitted batch job 21463781
+Submitted batch job 21463782
+Submitted batch job 21463783
+Submitted batch job 21463784
+Submitted batch job 21463785
+
+bash weighted_utmost_simulation_v1.sh
+Submitted batch job 21618777
+Submitted batch job 21618778
+Submitted batch job 21618779
+Submitted batch job 21618780
+Submitted batch job 21618781
+Submitted batch job 21618782
+(base) -bash-4.2$ bash weighted_utmost_simulation_v2.sh
+Submitted batch job 21618783
+Submitted batch job 21618784
+Submitted batch job 21618785
+Submitted batch job 21618786
+Submitted batch job 21618787
+Submitted batch job 21618788
+(base) -bash-4.2$ bash weighted_utmost_simulation_v3.sh
+Submitted batch job 21618789
+Submitted batch job 21618790
+Submitted batch job 21618791
+Submitted batch job 21618792
+Submitted batch job 21618793
+Submitted batch job 21618794
+
+# removing dsq files
+
+rm dsq-wbvls_ridge_pearson_real_1_1*
+rm dsq-wbvls_ridge_pearson_real_1_2*
+rm dsq-wbvls_ridge_pearson_real_1_*
+
+rm dsq-wbvls_ridge_pearson_real_10_1*
+rm dsq-wbvls_ridge_pearson_real_10_2*
+rm dsq-wbvls_ridge_pearson_real_10_*
+
+rm dsq-wbvls_ridge_pearson_real_100_1*
+rm dsq-wbvls_ridge_pearson_real_100_2*
+rm dsq-wbvls_ridge_pearson_real_100_*
+
+rm dsq-wbvls_ridge_pearson_real_1000_1*
+rm dsq-wbvls_ridge_pearson_real_1000_2*
+rm dsq-wbvls_ridge_pearson_real_1000_*
+
+rm dsq-wbvls_ridge_pearson_real_1000_
+
+# enet
+
+bash dsq_wbvls_enet_pearson_real_1.sh
+bash dsq_wbvls_enet_pearson_real_10.sh
+bash dsq_wbvls_enet_pearson_real_100.sh
+bash dsq_wbvls_enet_pearson_real_1000.sh
+
+bash submit_wbvls_ridge_pearson_real_1.sh
+bash submit_wbvls_ridge_pearson_real_10.sh
+bash submit_wbvls_ridge_pearson_real_100.sh
+bash submit_wbvls_ridge_pearson_real_1000.sh
+
+
+
+# enet training 
+
+bash dsq_wbvls_enet_pearson_real.sh
+bash submit_wbvls_enet_pearson_real.sh
+
+Submitted batch job 22188181
+Submitted batch job 22188182
+Submitted batch job 22188183
+Submitted batch job 22188184
+Submitted batch job 22188185
+
+bash weighted_bvls_simulation_v3.sh
+Submitted batch job 22555614
+Submitted batch job 22555615
+Submitted batch job 22555616
+Submitted batch job 22555617
+Submitted batch job 22555618
+Submitted batch job 22555619
+Submitted batch job 22555620
+Submitted batch job 22555621
+Submitted batch job 22555622
+Submitted batch job 22555623
+Submitted batch job 22555624
+Submitted batch job 22555625
+Submitted batch job 22555626
+Submitted batch job 22555627
+Submitted batch job 22555628
+Submitted batch job 22555629
+Submitted batch job 22555630
+Submitted batch job 22555631
+Submitted batch job 22555632
+Submitted batch job 22555633
+Submitted batch job 22555634
+Submitted batch job 22555635
+Submitted batch job 22555636
+Submitted batch job 22555637
+
+# testing real bvls enet 
+Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/weighted_bvls_enet_real_gene.R 1 1 /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/ /gpfs/ysm/pi/zhao-data/zy92/GTEx_V8/processed_data/adjusted_expr/ /gpfs/ysm/pi/zhao-data/zy92/bvls_twas_results/wbvls_enet_output/ 3
+
+# testing simulation jti
+dSQ --jobfile simulation_jti_he0.2_cp0.05_v1.txt  -J simu_jti --mem-per-cpu=20G -t 24:00:00 -p bigmem,day,scavenge --batch-file simulation_jti_he0.2_cp0.05_v1_run.sh
+simulation_jti_he0.2_cp0.05_v3.txt
+Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_jti_v3.R 3 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /home/zy92/scratch60/bvls_simulation/v3/  0.2 0.05 500
+Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/simulation_jti_v3_test.R 4 /gpfs/ysm/pi/zhao-data/yh587/chr21/  /home/zy92/scratch60/bvls_simulation/v3/  0.2 0.05 500
+
+# simulation jti 
+bash weighted_jti_simulation_v1.sh
+Submitted batch job 22855584
+Submitted batch job 22855585
+Submitted batch job 22855586
+Submitted batch job 22855587
+Submitted batch job 22855588
+Submitted batch job 22855589
+(base) -bash-4.2$ bash weighted_jti_simulation_v2.sh
+Submitted batch job 22855590
+Submitted batch job 22855591
+Submitted batch job 22855592
+Submitted batch job 22855593
+Submitted batch job 22855594
+Submitted batch job 22855595
+(base) -bash-4.2$ bash weighted_jti_simulation_v3.sh
+Submitted batch job 22855596
+Submitted batch job 22855597
+Submitted batch job 22855598
+Submitted batch job 22855599
+Submitted batch job 22855600
+Submitted batch job 22855601
+
+# un spearman 
+
+bash dsq_wbvls_ridge_spearman_real_1.sh
+bash dsq_wbvls_ridge_spearman_real_10.sh
+bash dsq_wbvls_ridge_spearman_real_100.sh
+bash dsq_wbvls_ridge_spearman_real_1000.sh
+
+bash submit_wbvls_ridge_spearman_real_1.sh
+bash submit_wbvls_ridge_spearman_real_10.sh
+bash submit_wbvls_ridge_spearman_real_100.sh
+bash submit_wbvls_ridge_spearman_real_1000.sh
+
+# un pearson simulation rerun with BVLS ENET
+bash dsq_weighted_bvls_simulation_v1.sh
+bash dsq_weighted_bvls_simulation_v2.sh
+bash dsq_weighted_bvls_simulation_v3.sh
+
+bash weighted_bvls_simulation_v1.sh
+bash weighted_bvls_simulation_v2.sh
+bash weighted_bvls_simulation_v3.sh
+
+# new simulation 
+(base) -bash-4.2$ bash weighted_bvls_simulation_v1.sh
+Submitted batch job 23265223
+Submitted batch job 23265224
+Submitted batch job 23265225
+Submitted batch job 23265226
+Submitted batch job 23265227
+Submitted batch job 23265228
+Submitted batch job 23265229
+Submitted batch job 23265230
+Submitted batch job 23265231
+Submitted batch job 23265232
+Submitted batch job 23265233
+Submitted batch job 23265234
+Submitted batch job 23265235
+Submitted batch job 23265236
+Submitted batch job 23265237
+Submitted batch job 23265238
+Submitted batch job 23265239
+Submitted batch job 23265240
+Submitted batch job 23265241
+Submitted batch job 23265242
+Submitted batch job 23265243
+Submitted batch job 23265244
+Submitted batch job 23265245
+Submitted batch job 23265246
+(base) -bash-4.2$ bash weighted_bvls_simulation_v2.sh
+Submitted batch job 23265247
+Submitted batch job 23265248
+Submitted batch job 23265249
+Submitted batch job 23265250
+Submitted batch job 23265251
+Submitted batch job 23265252
+Submitted batch job 23265253
+Submitted batch job 23265254
+Submitted batch job 23265255
+Submitted batch job 23265256
+Submitted batch job 23265257
+Submitted batch job 23265258
+Submitted batch job 23265259
+Submitted batch job 23265262
+Submitted batch job 23265263
+Submitted batch job 23265264
+Submitted batch job 23265265
+Submitted batch job 23265266
+Submitted batch job 23265267
+Submitted batch job 23265268
+Submitted batch job 23265269
+Submitted batch job 23265270
+Submitted batch job 23265271
+Submitted batch job 23265272
+(base) -bash-4.2$ bash weighted_bvls_simulation_v3.sh
+Submitted batch job 23265273
+Submitted batch job 23265274
+Submitted batch job 23265275
+Submitted batch job 23265276
+Submitted batch job 23265277
+Submitted batch job 23265278
+Submitted batch job 23265279
+Submitted batch job 23265280
+Submitted batch job 23265281
+Submitted batch job 23265282
+Submitted batch job 23265283
+Submitted batch job 23265284
+Submitted batch job 23265285
+Submitted batch job 23265286
+Submitted batch job 23265287
+Submitted batch job 23265288
+Submitted batch job 23265289
+Submitted batch job 23265290
+Submitted batch job 23265291
+Submitted batch job 23265292
+Submitted batch job 23265293
+Submitted batch job 23265294
+Submitted batch job 23265295
+Submitted batch job 23265296
+
+# collect bvls_enet results 
+sbatch wbvls_enet_pearson_summary_real_run.sh
+Submitted batch job 23325710
+
+
+# RNA seq 
+module load STAR/2.7.0f-foss-2018b
+cd /gpfs/loomis/scratch60/zhao/zy92/RNA_seq/star/genome
+STAR \--runThreadN 12 --runMode genomeGenerate --genomeDir ./ \--genomeFastaFiles ./Homo_sapiens.GRCh38.dna.primary_assembly.fa
+
+
+dsq-RNA_seq_mapping_task_GSE135251-19110431_212-bigmem04
+
+dsqa --job-id 19110431 --job-file RNA_seq_mapping_task_GSE135251.txt --states OUT_OF_MEMORY > 19110431_rerun.txt 2> 19110431_report.txt
+
+dSQ --jobfile 19110431_rerun.txt -J rerun_rnaseq --mem-per-cpu=64G -t 12:00:00 -p bigmem,day --batch-file 19110431_rerun_run.sh
+
+dsqa --job-id 23937415 --job-file RNA_seq_mapping_task_GSE135251_RSEM.txt --states OUT_OF_MEMORY > 23937415_rerun.txt 2> 23937415_report.txt
+
+dSQ --jobfile 23937415_rerun.txt -J rerun_rnaseq --mem-per-cpu=64G -t 12:00:00 -p bigmem,day --batch-file 23937415_rerun_run.sh
 
 
 
 
+PREFIX=SRR9882966
+WORKING_DIR=/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/star/GSE135251/
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/student_tools/RSEM/bin/rsem-calculate-expression --bam --no-bam-output -p 4  --paired-end --forward-prob 0  \
+$WORKING_DIR/RSEM/${PREFIX}Aligned.toTranscriptome.out.bam /gpfs/loomis/scratch60/zhao/zy92/RNA_seq/star/nash_rsem/ref $WORKING_DIR/RSEM/$PREFIX.Quant \
+>& /$WORKING_DIR/RSEM/$PREFIX.rsem_quant_test.log
+done 
+echo "Complete!"
 
+
+/gpfs/loomis/scratch60/zhao/zy92/RNA_seq/student_tools/RSEM/bin/rsem-generate-data-matrix SRR9882956.Quant.isoforms.results SRR9882957.Quant.isoforms.results SRR9882958.Quant.isoforms.results SRR9882959.Quant.isoforms.results SRR9882960.Quant.isoforms.results SRR9882961.Quant.isoforms.results SRR9882963.Quant.isoforms.results SRR9882964.Quant.isoforms.results SRR9882965.Quant.isoforms.results SRR9882966.Quant.isoforms.results SRR9882967.Quant.isoforms.results SRR9882968.Quant.isoforms.results SRR9882969.Quant.isoforms.results SRR9882970.Quant.isoforms.results SRR9882971.Quant.isoforms.results SRR9882973.Quant.isoforms.results SRR9882974.Quant.isoforms.results SRR9882975.Quant.isoforms.results SRR9882976.Quant.isoforms.results SRR9882977.Quant.isoforms.results SRR9882979.Quant.isoforms.results SRR9882980.Quant.isoforms.results SRR9882981.Quant.isoforms.results SRR9882982.Quant.isoforms.results SRR9882983.Quant.isoforms.results SRR9882984.Quant.isoforms.results SRR9882985.Quant.isoforms.results SRR9882986.Quant.isoforms.results SRR9882987.Quant.isoforms.results SRR9882988.Quant.isoforms.results SRR9882989.Quant.isoforms.results SRR9882990.Quant.isoforms.results SRR9882991.Quant.isoforms.results SRR9882992.Quant.isoforms.results SRR9882993.Quant.isoforms.results SRR9882994.Quant.isoforms.results SRR9882995.Quant.isoforms.results SRR9882996.Quant.isoforms.results SRR9882997.Quant.isoforms.results SRR9882998.Quant.isoforms.results SRR9882999.Quant.isoforms.results SRR9883000.Quant.isoforms.results SRR9883001.Quant.isoforms.results SRR9883002.Quant.isoforms.results SRR9883003.Quant.isoforms.results SRR9883004.Quant.isoforms.results SRR9883005.Quant.isoforms.results SRR9883006.Quant.isoforms.results SRR9883007.Quant.isoforms.results SRR9883008.Quant.isoforms.results SRR9883009.Quant.isoforms.results SRR9883010.Quant.isoforms.results SRR9883011.Quant.isoforms.results SRR9883012.Quant.isoforms.results SRR9883013.Quant.isoforms.results SRR9883014.Quant.isoforms.results SRR9883015.Quant.isoforms.results SRR9883016.Quant.isoforms.results SRR9883017.Quant.isoforms.results SRR9883018.Quant.isoforms.results SRR9883019.Quant.isoforms.results SRR9883020.Quant.isoforms.results SRR9883021.Quant.isoforms.results SRR9883022.Quant.isoforms.results SRR9883023.Quant.isoforms.results SRR9883024.Quant.isoforms.results SRR9883025.Quant.isoforms.results SRR9883026.Quant.isoforms.results SRR9883027.Quant.isoforms.results SRR9883028.Quant.isoforms.results SRR9883029.Quant.isoforms.results SRR9883030.Quant.isoforms.results SRR9883031.Quant.isoforms.results SRR9883032.Quant.isoforms.results SRR9883033.Quant.isoforms.results SRR9883034.Quant.isoforms.results SRR9883035.Quant.isoforms.results SRR9883036.Quant.isoforms.results SRR9883037.Quant.isoforms.results SRR9883038.Quant.isoforms.results SRR9883039.Quant.isoforms.results SRR9883040.Quant.isoforms.results SRR9883041.Quant.isoforms.results SRR9883042.Quant.isoforms.results SRR9883043.Quant.isoforms.results SRR9883044.Quant.isoforms.results SRR9883045.Quant.isoforms.results SRR9883046.Quant.isoforms.results SRR9883047.Quant.isoforms.results SRR9883048.Quant.isoforms.results SRR9883049.Quant.isoforms.results SRR9883050.Quant.isoforms.results SRR9883051.Quant.isoforms.results SRR9883052.Quant.isoforms.results SRR9883053.Quant.isoforms.results SRR9883054.Quant.isoforms.results SRR9883055.Quant.isoforms.results SRR9883056.Quant.isoforms.results SRR9883057.Quant.isoforms.results SRR9883058.Quant.isoforms.results SRR9883059.Quant.isoforms.results SRR9883060.Quant.isoforms.results SRR9883061.Quant.isoforms.results SRR9883062.Quant.isoforms.results SRR9883063.Quant.isoforms.results SRR9883064.Quant.isoforms.results SRR9883065.Quant.isoforms.results SRR9883066.Quant.isoforms.results SRR9883067.Quant.isoforms.results SRR9883068.Quant.isoforms.results SRR9883069.Quant.isoforms.results SRR9883070.Quant.isoforms.results SRR9883071.Quant.isoforms.results SRR9883072.Quant.isoforms.results SRR9883073.Quant.isoforms.results SRR9883074.Quant.isoforms.results SRR9883075.Quant.isoforms.results SRR9883076.Quant.isoforms.results SRR9883077.Quant.isoforms.results SRR9883078.Quant.isoforms.results SRR9883079.Quant.isoforms.results SRR9883080.Quant.isoforms.results SRR9883081.Quant.isoforms.results SRR9883082.Quant.isoforms.results SRR9883084.Quant.isoforms.results SRR9883092.Quant.isoforms.results SRR9883099.Quant.isoforms.results SRR9883100.Quant.isoforms.results SRR9883103.Quant.isoforms.results SRR9883105.Quant.isoforms.results SRR9883110.Quant.isoforms.results SRR9883122.Quant.isoforms.results SRR9883123.Quant.isoforms.results SRR9883125.Quant.isoforms.results SRR9883151.Quant.isoforms.results SRR9883152.Quant.isoforms.results SRR9883156.Quant.isoforms.results SRR9883157.Quant.isoforms.results SRR9883163.Quant.isoforms.results SRR9883164.Quant.isoforms.results SRR9883165.Quant.isoforms.results SRR9883168.Quant.isoforms.results > isoforms.counts.matrix
+
+dSQ --jobfile RNA_seq_pipeline_GSE135251_remaining_task.txt -J STAR_remaining --mem-per-cpu=64G -t 23:00:00 -p bigmem,day --batch-file RNA_seq_pipeline_GSE135251_remaining_task_run.sh
+sbatch RNA_seq_pipeline_GSE135251_remaining_task_run.sh
+Submitted batch job 25327312
+
+sbatch simulation_utmost_he0.4_cp0.05_v2_run.sh
+Submitted batch job 25349741
+
+sbatch utmost_test_real_chr_run.sh
+Submitted batch job 25414476
+
+sbatch general_utmost_summary_real_updated_run.sh
+Submitted batch job 25534666
+
+bash dsq_bvjti_simulation_v1.sh
+bash dsq_bvjti_simulation_v2.sh
+bash dsq_bvjti_simulation_v3.sh
+
+bash bvjti_simulation_v1_run.sh
+bash bvjti_simulation_v2_run.sh
+bash bvjti_simulation_v3_run.sh
 
 
 
