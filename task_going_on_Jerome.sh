@@ -1863,4 +1863,57 @@ bash bvjti_simulation_v2_run.sh
 bash bvjti_simulation_v3_run.sh
 
 
+ssh -N -f -L localhost:8777:localhost:8888 zyu@45.79.170.93
+
+Error: 
+
+dsq-jti_real_19-26130993_0417-c24n08.out
+INFO initializing model training ...
+Error in y - predmat : non-numeric argument to binary operator
+Calls: tryCatch ... tryCatchList -> cv.glmnet -> cv.glmnet.raw -> do.call -> cv.elnet
+In addition: Warning messages:
+1: Column `tissue` joining factor and character vector, coercing into character vector
+2: Column `tissue` joining factor and character vector, coercing into character vector
+Execution halted
+
+==> dsq-jti_real_19-26130993_0426-c27n04.out <==
+
+[1] "INFO: 427 / 2292"
+Reading: /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/chr19/ENSG00000118160.13/ENSG00000118160.13.b
+im
+Reading: /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/chr19/ENSG00000118160.13/ENSG00000118160.13.f
+am
+Reading: /gpfs/loomis/project/zhao/zy92/GTEX/pruned_loc/chr19/ENSG00000118160.13/ENSG00000118160.13.bed
+[1] "INFO: genotype matrix dimension:660 * 838"
+[1] "INFO: Reading expression files:ENSG00000118160.13"
+[1] "INFO: Training ..."
+Error: measure variables not found in data: NA
+Execution halted
+
+
+bash submit_wbvls_enet_pearson_real.sh
+Submitted batch job 27247893
+Submitted batch job 27247894
+Submitted batch job 27247895
+Submitted batch job 27247896
+Submitted batch job 27247897
+Submitted batch job 27247898
+Submitted batch job 27247899
+Submitted batch job 27247900
+Submitted batch job 27247901
+Submitted batch job 27247902
+Submitted batch job 27247903
+Submitted batch job 27247904
+Submitted batch job 27247905
+Submitted batch job 27247906
+Submitted batch job 27247907
+Submitted batch job 27247908
+Submitted batch job 27247909
+Submitted batch job 27247910
+Submitted batch job 27247911
+Submitted batch job 27247912
+Submitted batch job 27247913
+Submitted batch job 27247914
+
+
 
