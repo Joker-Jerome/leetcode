@@ -1916,4 +1916,166 @@ Submitted batch job 27247913
 Submitted batch job 27247914
 
 
+Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/jti_real_chr_v2_debug.R 1 149 /gpfs/ysm/scratch60/zhao/zy92/pruned_loc/ /gpfs/ysm/scratch60/zhao/zy92/adjusted_expr/ /gpfs/ysm/scratch60/zhao/zy92/temp/jti_output/
+
+
+sbatch wbvls_enet_pearson_real_1_run.sh
+sbatch wbvls_enet_pearson_real_1_run.sh
+sbatch wbvls_enet_pearson_real_1_run.sh
+sbatch wbvls_enet_pearson_real_1_run.sh
+sbatch wbvls_enet_pearson_real_1_run.sh
+sbatch wbvls_enet_pearson_real_1_run.sh
+sbatch wbvls_enet_pearson_real_1_run.sh
+sbatch wbvls_enet_pearson_real_1_run.sh
+sbatch wbvls_enet_pearson_real_1_run.sh
+
+
+# JTI rerun 20210719
+Submitted batch job 31569802
+Submitted batch job 31569803
+Submitted batch job 31569804
+Submitted batch job 31569805
+Submitted batch job 31569806
+Submitted batch job 31569807
+Submitted batch job 31569808
+Submitted batch job 31569809
+Submitted batch job 31569810
+Submitted batch job 31569811
+Submitted batch job 31569812
+Submitted batch job 31569813
+Submitted batch job 31569814
+Submitted batch job 31569815
+Submitted batch job 31569816
+Submitted batch job 31569817
+Submitted batch job 31569818
+Submitted batch job 31569819
+Submitted batch job 31569820
+Submitted batch job 31569821
+Submitted batch job 31569822
+Submitted batch job 31569823
+
+#  summary of performances
+
+11954713
+12082394
+
+Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/jti_real_chr_v2.R 1 231 /gpfs/loomis/scratch60/zhao/zy92/pruned_loc/ /gpfs/loomis/scratch60/zhao/zy92/adjusted_expr/ /gpfs/loomis/scratch60/zhao/zy92/temp/jti_output/
+
+# gibbs path 
+/gpfs/gibbs/project/zhao/zy92/twas_bvls/code/submit
+
+
+# build database
+
+/gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/data/tables/UTMOST/
+
+
+# database building 
+cd /gpfs/loomis/project/zhao/zy92/twas_bvls/code	
+bash build_weight_database_master.sh /gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/data/tables/UTMOST/
+bash build_weight_database_master.sh /gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/data/tables/WEIGHTED_BVLS_ENET_UN_PEARSON/
+bash build_weight_database_master.sh /gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/data/tables/JTI/
+bash build_weight_database_master.sh /gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/data/tables//
+bash build_weight_database_master.sh /gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/data/tables/RIDGE_1/
+bash build_weight_database_master.sh /gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/data/tables/RIDGE_10/
+
+
+
+
+# joint covariance 
+bash joint_covariance_calculation_gibbs.sh UTMOST_all
+
+
+vi joint_covariance_utmost_all_task.txt
+dSQ --jobfile joint_covariance_utmost_all_task.txt -J joint_cov --mem-per-cpu=256G -t 24:00:00 -p bigmem --batch-file joint_covariance_utmost_all_task_run.sh
+
+
+vi joint_covariance_jti_ridge_all_task.txt
+dSQ --jobfile joint_covariance_jti_ridge_all_task.txt -J joint_cov --mem-per-cpu=256G -t 24:00:00 -p bigmem --batch-file joint_covariance_jti_ridge_all_task_run.sh
+
+# single covariance 
+dSQ --jobfile single_tissue_nc_bvls_task.txt -J bvls_single_cov --mem-per-cpu=32G -t 24:00:00 -p bigmem,day --batch-file single_tissue_nc_bvls_task_run.sh
+dSQ --jobfile single_tissue_nc_enet_task.txt -J enet_single_cov --mem-per-cpu=32G -t 24:00:00 -p bigmem,day --batch-file single_tissue_nc_enet_task_run.sh
+
+
+# results 
+/gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/training_results
+/gpfs/gibbs/pi/zhao/zy92/data/gtex/adjusted_expr
+
+
+# jti 
+Rscript /gpfs/loomis/project/zhao/zy92/twas_bvls/code/jti_real_chr_v2.R 1 231 /gpfs/loomis/scratch60/zhao/zy92/pruned_loc/ /gpfs/loomis/scratch60/zhao/zy92/adjusted_expr/ /gpfs/loomis/scratch60/zhao/zy92/temp/jti_output/
+
+RIDGE_1000
+# single tissue test 
+gibbs/projects/twas_bvls/code/submit/pipeline/step1.sh
+
+chr 1 from cohort 1 still ruuning 
+
+
+
+36672117
+
+
+# error summary for JTI
+ 
+1. dsq-jti_real_13_farnam_re-14759828_26-c22n05.out
+[1] "INFO: tissue 1"
+Registered S3 method overwritten by 'R.oo':
+  method        from
+  throw.default R.methodsS3
+ INFO initializing model training ...
+ INFO grid searching ...
+Error : Matrices must have same number of columns in rbind2(.Call(dense_to_Csparse, x), y)
+In addition: Warning messages:
+1: from glmnet Fortran code (error code -10001); Number of nonzero coefficients along the path exceeds pmax=200 at 1th lambda value; solutions for larger lambdas returned
+2: In getcoef(fit, nvars, nx, vnames) :
+  an empty model has been returned; probably a convergence issue
+Error: $ operator is invalid for atomic vectors
+Execution halted
+
+2. dsq-jti_real_13_farnam_re-14759828_27-c22n09.out
+[1] " INFO the r = 0.205894405829323, p = 3.64957316950791e-05 \n"
+[1] "INFO: tissue 21"
+ INFO initializing model training ...
+ INFO grid searching ...
+Error : Matrices must have same number of columns in rbind2(.Call(dense_to_Csparse, x), y)
+In addition: Warning messages:
+1: from glmnet Fortran code (error code -10001); Number of nonzero coefficients along the path exceeds pmax=200 at 1th lambda value; solutions for larger lambdas returned
+2: In getcoef(fit, nvars, nx, vnames) :
+  an empty model has been returned; probably a convergence issue
+Error: $ operator is invalid for atomic vectors
+Execution halted
+
+3. dsq-jti_real_13_farnam_re-14759828_28-c22n10.out
+[1] "INFO: tissue 21"
+ INFO initializing model training ...
+ INFO grid searching ...
+Error : Matrices must have same number of columns in rbind2(.Call(dense_to_Csparse, x), y)
+In addition: There were 46 warnings (use warnings() to see them)
+Error: $ operator is invalid for atomic vectors
+Execution halted
+
+4. dsq-jti_real_13_farnam_re-14759828_29-c22n11.out
+[1] "INFO: tissue 29"
+ INFO initializing model training ...
+ INFO grid searching ...
+Error : Matrices must have same number of columns in rbind2(.Call(dense_to_Csparse, x), y)
+In addition: There were 16 warnings (use warnings() to see them)
+Error: $ operator is invalid for atomic vectors
+Execution halted
+
+5. dsq-jti_real_13_farnam_re-14759828_30-c22n12.out
+[1] "INFO: tissue 49"
+ INFO initializing model training ...
+ INFO grid searching ...
+Error : Matrices must have same number of columns in rbind2(.Call(dense_to_Csparse, x), y)
+In addition: There were 46 warnings (use warnings() to see them)
+Error: $ operator is invalid for atomic vectors
+Execution halted
+
+/ycga-gpfs/apps/hpc/software/R/3.6.1-foss-2018b/bin/Rscript /gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/code/bvridge_real_ruddle.R 10 2 /gpfs/gibbs/pi/zhao/zy92/data/gtex/pruned_loc/ /gpfs/gibbs/pi/zhao/zy92/data/gtex/adjusted_expr/ /gpfs/gibbs/pi/zhao/zy92/projects/twas_bvls/training_results/bvridge_output/ 1
+
+single_tissue_cov 44, 45, 48 
+
 
